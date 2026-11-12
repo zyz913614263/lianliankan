@@ -4,6 +4,7 @@ import {
   type DeckTileIndexes,
   deckTileIndexes,
   getInitialPairs,
+  getMaterialPoints,
 } from "@/lib/game"
 import { Database } from "@/lib/in-memoriam"
 import { type ParentProps, batch, useContext } from "solid-js"
@@ -11,6 +12,18 @@ import { createContext } from "solid-js"
 import { createPersistentDatabase } from "./persistentDatabase"
 
 const DECK_STATE_NAMESPACE = "deck-state-v4"
+export const DECK_CAPACITY = 163
+
+export function deckWithinCapacity(deck: DeckTile[]) {
+  const maxCards = Math.floor(DECK_CAPACITY / 2)
+  if (deck.length <= maxCards) return deck
+
+  return [...deck]
+    .sort(
+      (a, b) => getMaterialPoints(b.material) - getMaterialPoints(a.material),
+    )
+    .slice(0, maxCards)
+}
 
 export function createDeckState() {
   const db = new Database<DeckTile, DeckTileIndexes>(deckTileIndexes)

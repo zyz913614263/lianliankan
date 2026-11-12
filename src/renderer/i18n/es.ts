@@ -29,6 +29,8 @@ export const es = {
     help: "Ayuda",
     paused: "pausado",
     celebrate: "¡Celebrar!",
+    skipRound: "Saltar ronda",
+    addCoins: "Añadir monedas",
   },
   intro: {
     goal: "Juega a través de 24 rondas de Mahjong Solitaire para alcanzar tu objetivo.",

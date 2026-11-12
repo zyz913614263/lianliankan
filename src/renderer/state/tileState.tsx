@@ -8,6 +8,7 @@ import {
 import { Database } from "@/lib/in-memoriam"
 import { setupTiles } from "@/lib/setupTiles"
 import Rand from "rand-seed"
+import { deckWithinCapacity } from "./deckState"
 import { type ParentProps, batch, createContext, useContext } from "solid-js"
 import { createPersistentDatabase } from "./persistentDatabase"
 
@@ -52,7 +53,7 @@ export function initializeTileState(
   db: Database<Tile, TileIndexes>,
 ) {
   const rng = new Rand(id)
-  const newTiles = setupTiles({ rng, deck })
+  const newTiles = setupTiles({ rng, deck: deckWithinCapacity(deck) })
 
   batch(() => {
     db.update({})

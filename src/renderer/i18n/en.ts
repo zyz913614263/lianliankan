@@ -29,6 +29,8 @@ export const en = {
     paused: "paused",
     help: "Help",
     celebrate: "Celebrate!",
+    skipRound: "Skip round",
+    addCoins: "Add coins",
   },
   intro: {
     goal: "Play through 24 Mahjong Solitaire rounds to reach your goal!",

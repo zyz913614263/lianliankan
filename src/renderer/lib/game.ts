@@ -713,7 +713,7 @@ function resolveJumpingTiles({
   return false
 }
 
-type MapType = (number | null)[][][]
+export type MapType = (number | null)[][][]
 
 export function mapGet(map: MapType, x: number, y: number, z: number) {
   if (x < 0 || y < 0 || z < 0) return null

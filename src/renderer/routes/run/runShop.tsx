@@ -1,5 +1,5 @@
 import { play, useMusic } from "@/components/audio"
-import { ShopButton } from "@/components/button"
+import { Button, ShopButton } from "@/components/button"
 import { BasicTile } from "@/components/game/basicTile"
 import { MaterialExplanationDescription } from "@/components/game/tileDetails"
 import { ArrowRight, Buy, Dices, Freeze, X } from "@/components/icon"
@@ -9,7 +9,7 @@ import { type DeckTile, type Material, type Suit, getCard } from "@/lib/game"
 import { captureEvent } from "@/lib/observability"
 import { throttle } from "@/lib/throttle"
 import { useSmallerTileSize } from "@/state/constants"
-import { useDeckState } from "@/state/deckState"
+import { DECK_CAPACITY, useDeckState } from "@/state/deckState"
 import { initialGameState, useGameState } from "@/state/gameState"
 import { setMutable } from "@/state/persistantMutable"
 import {
@@ -67,6 +67,7 @@ import {
   modalDetailsContentClass,
   pairClass,
   rotation,
+  addCoinsButtonClass,
   shop1ArrowClass,
   shop2ArrowClass,
   shopClass,
@@ -80,8 +81,6 @@ import {
   upgradeDescriptionClass,
   upgradeTitleClass,
 } from "./runShop.css"
-
-const DECK_CAPACITY = 163
 
 const onHoverTile = throttle(() => {
   play("click2")
@@ -552,10 +551,20 @@ function Header() {
     })
   }
 
+  function addCoins() {
+    run.money += 10
+    play("coin")
+  }
+
   return (
     <div class={shopHeaderClass}>
       <div class={shopHeaderItemsClass}>
         <Menu />
+        <div class={addCoinsButtonClass}>
+          <Button type="button" hue="crack" onPointerDown={addCoins}>
+            {t.common.addCoins()}
+          </Button>
+        </div>
       </div>
 
       <div class={continueClass}>

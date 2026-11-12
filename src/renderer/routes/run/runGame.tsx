@@ -1,5 +1,6 @@
 import { play, useMusic } from "@/components/audio"
 import { Background } from "@/components/background"
+import { Button } from "@/components/button"
 import { DustParticles } from "@/components/game/dustParticles"
 import { Powerups } from "@/components/game/powerups"
 import { TileComponent } from "@/components/game/tileComponent"
@@ -91,7 +92,18 @@ export default function RunGame() {
     play("tiles")
     play("gong")
   })
+  const t = useTranslation()
   const comboAnimation = useComboEffect()
+
+  function passRound() {
+    if (endCondition()) return
+    batch(() => {
+      const penalty = getPenalty(game.time, round())
+      const needed = round().pointObjective + penalty
+      if (game.points < needed) game.points = needed
+      game.endCondition = "empty-board"
+    })
+  }
 
   // Cheat: Resolve pair
   createShortcut(["Shift", "K"], () => {
@@ -123,13 +135,7 @@ export default function RunGame() {
   })
 
   // Cheat: Provoke game over
-  createShortcut(["Shift", "G"], () => {
-    batch(() => {
-      const penalty = getPenalty(game.time, round())
-      game.points = round().pointObjective + penalty
-      game.endCondition = "empty-board"
-    })
-  })
+  createShortcut(["Shift", "G"], passRound)
 
   const num = createMemo(() => {
     const rnd = new Rand(`${run.runId}-${run.round}`)
@@ -147,9 +153,21 @@ export default function RunGame() {
           class={containerClass({
             position: "topLeft",
             orientation: orientation(),
+            sudo: game.tutorialStep != null && !endCondition(),
           })}
+          style={{
+            "z-index":
+              game.tutorialStep != null && !endCondition()
+                ? "10000"
+                : undefined,
+          }}
         >
           <Menu />
+          <Show when={!endCondition()}>
+            <Button type="button" hue="bam" onPointerDown={passRound}>
+              {t.common.skipRound()}
+            </Button>
+          </Show>
         </div>
         <div
           class={containerClass({
@@ -224,7 +242,7 @@ function Tutorial() {
   })
 
   return (
-    <Show when={game.tutorialStep !== null}>
+    <Show when={game.tutorialStep !== null && !game.endCondition}>
       <Switch>
         <Match when={game.tutorialStep === 1}>
           <div class={tutorialClass} onPointerDown={onPointerDown}>

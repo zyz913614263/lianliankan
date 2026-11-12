@@ -510,6 +510,11 @@ export const shopHeaderClass = style({
   alignItems: "center",
 })
 
+export const addCoinsButtonClass = style({
+  position: "relative",
+  zIndex: 10000,
+})
+
 export const shopHeaderItemsClass = style({
   display: "flex",
   alignItems: "center",

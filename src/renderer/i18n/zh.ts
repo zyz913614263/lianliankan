@@ -31,6 +31,8 @@ export const zh = {
     paused: "已暂停",
     help: "帮助",
     celebrate: "庆祝！",
+    skipRound: "快速通关",
+    addCoins: "增加金币",
   },
   intro: {
     goal: "打通 24 关麻将接龙，达成你的目标！",
